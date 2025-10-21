@@ -1,4 +1,4 @@
-import { mustParse } from "@/utils/string";
+import { mustParse } from "../utils/string";
 
 const env = process.env;
 

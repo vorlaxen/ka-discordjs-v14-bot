@@ -6,11 +6,7 @@
     "dist/",
     "logs/"
   ],
-  "exec": "ts-node -r tsconfig-paths/register -r dotenv/config src/app.ts",
-  "env": {
-    "NODE_ENV": "development",
-    "TS_NODE_PROJECT": "./tsconfig.json"
-  },
+  "exec": "tsx --watch -r dotenv/config src/app.ts",
   "delay": 1000,
   "colours": true,
   "legacyWatch": true,

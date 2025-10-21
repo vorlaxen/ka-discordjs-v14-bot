@@ -1,8 +1,8 @@
+import { RuntimeConfig } from '../../config';
 import { format, transports } from 'winston';
 import CustomLogTransport from './Transports/loggerTransport';
-import { RuntimeConfig } from '@/config';
 
-const isProd = RuntimeConfig.environment === 'production';
+const isProd = () => RuntimeConfig.environment === 'production';
 
 export const loggerLevel = isProd ? 'info' : 'debug';
 

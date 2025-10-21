@@ -1,6 +1,6 @@
 import { Dialect } from "sequelize";
-import { mustParse } from "@/utils/string";
-import logger from "@/infrastructure/Logger";
+import { mustParse } from "../utils/string";
+import logger from "../infrastructure/Logger";
 
 export interface DatabaseConfigType {
   username: string;

@@ -1,12 +1,16 @@
-import client from "@/app/client";
-import logger from "@/infrastructure/Logger";
-import { botConfig } from "@/config";
-import { initializeDatabase, sequelize } from "@/infrastructure/Database";
+import 'dotenv/config';
+import { RuntimeConfig, botConfig } from "./config";
 import { initializeRedis } from "./infrastructure/Cache";
+import { EventHandler } from "./handlers/eventHandler";
+import logger from "./infrastructure/Logger";
+import { initializeDatabase, sequelize } from "./infrastructure/Database";
+import client from "./app/client";
 
 const bootstrap = async () => {
   try {
     logger.info("Starting application bootstrap...");
+
+    console.log(RuntimeConfig.environment)
 
     const [dbInit, redisInit] = await Promise.all([
       initializeDatabase(),
@@ -15,11 +19,10 @@ const bootstrap = async () => {
 
     logger.info("Services initialized successfully.");
 
-    await client.login(botConfig.token).then(async () => {
-      if (client.user) {
-        logger.info(`Logged in as ${client.user.tag} (ID: ${client.user.id})`);
-      }
-    });
+    const eh = new EventHandler(client);
+    await eh.loadAll();
+
+    await client.login(botConfig.token).then();
 
     const shutdown = async (signal: string) => {
       try {

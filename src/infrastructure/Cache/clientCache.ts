@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
-import logger from '@/infrastructure/Logger';
-import { redisClientConfig } from '@/config';
+import { redisClientConfig } from '../../config';
+import logger from '../Logger';
 
 let redisClient: Redis | null = null;
 let redisReadyPromise: Promise<void> | null = null;

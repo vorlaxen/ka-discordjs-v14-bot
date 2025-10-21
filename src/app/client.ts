@@ -1,6 +1,6 @@
 import { Client, Collection, GatewayIntentBits, Partials } from "discord.js";
-import { ExtendedClient, BotCommand, BotEvent } from "@/types/clientTypes";
-import logger from "@/infrastructure/Logger";
+import { ExtendedClient, BotCommand, BotEvent } from "../types/clientTypes";
+import logger from "../infrastructure/Logger";
 
 const client: ExtendedClient = new Client({
   intents: [

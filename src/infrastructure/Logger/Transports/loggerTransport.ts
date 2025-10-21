@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import TransportStream, { TransportStreamOptions } from 'winston-transport';
-import { generateUUID } from '@/utils/encryption/generatorUtil';
+import { generateUUID } from '../../../utils/encryption/generatorUtil';
 
 interface CustomTransportOptions extends TransportStreamOptions {
   logDir?: string;

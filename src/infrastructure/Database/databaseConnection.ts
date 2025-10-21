@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import logger from '../Logger';
 import { MODELS } from './databaseModel';
-import { databaseConfig } from '@/config';
+import { databaseConfig } from '../../config';
 
 export const sequelize = new Sequelize({
   ...databaseConfig,
