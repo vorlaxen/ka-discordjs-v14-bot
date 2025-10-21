@@ -1,0 +1,1 @@
+export { initializeRedis } from './clientCache';

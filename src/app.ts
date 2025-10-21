@@ -1,21 +1,34 @@
-import logger from "./infrastructure/Logger";
+import client from "@/app/client";
+import logger from "@/infrastructure/Logger";
+import { botConfig } from "@/config";
+import { initializeDatabase, sequelize } from "@/infrastructure/Database";
+import { initializeRedis } from "./infrastructure/Cache";
 
 const bootstrap = async () => {
   try {
     logger.info("Starting application bootstrap...");
 
-    //const [] = await Promise.all([]);
+    const [dbInit, redisInit] = await Promise.all([
+      initializeDatabase(),
+      initializeRedis(),
+    ]);
 
     logger.info("Services initialized successfully.");
 
-
-    
-
+    await client.login(botConfig.token).then(async () => {
+      if (client.user) {
+        logger.info(`Logged in as ${client.user.tag} (ID: ${client.user.id})`);
+      }
+    });
 
     const shutdown = async (signal: string) => {
       try {
         logger.info(`Received ${signal}. Shutting down gracefully...`);
-        //await Promise.all([]);
+        await Promise.all([
+          sequelize.close(),
+          redisInit?.quit?.(),
+          client.destroy()
+        ]);
         logger.info("All services closed. Exiting process.");
         process.exit(0);
       } catch (err) {
