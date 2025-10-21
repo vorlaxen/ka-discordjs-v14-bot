@@ -1,0 +1,21 @@
+{
+  "watch": ["src"],
+  "ext": "ts,json",
+  "ignore": [
+    "node_modules/",
+    "dist/",
+    "logs/"
+  ],
+  "exec": "ts-node -r tsconfig-paths/register -r dotenv/config src/app.ts",
+  "env": {
+    "NODE_ENV": "development",
+    "TS_NODE_PROJECT": "./tsconfig.json"
+  },
+  "delay": 1000,
+  "colours": true,
+  "legacyWatch": true,
+  "pollingInterval": 100,
+  "runOnChangeOnly": false,
+  "signal": "SIGTERM",
+  "verbose": true
+}
