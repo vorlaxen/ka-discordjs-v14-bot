@@ -3,7 +3,8 @@ module.exports = {
     {
       name: "ka-bot",
       script: "src/app.ts",
-      interpreter: "tsx",
+      interpreter: "npx",
+      interpreter_args: "tsx",
       cwd: "/mnt/c/Users/hakankygsz/Desktop/KA-BOT",
       watch: false,
       autorestart: true,
