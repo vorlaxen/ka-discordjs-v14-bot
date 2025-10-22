@@ -12,8 +12,6 @@ const bootstrap = async () => {
   try {
     logger.info("Starting application bootstrap...");
 
-    console.log(RuntimeConfig.environment)
-
     const [dbInit, redisInit] = await Promise.all([
       initializeDatabase(),
       initializeRedis(),
