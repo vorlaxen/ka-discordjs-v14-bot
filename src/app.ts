@@ -4,7 +4,9 @@ import { initializeRedis } from "./infrastructure/Cache";
 import { EventHandler } from "./handlers/eventHandler";
 import logger from "./infrastructure/Logger";
 import { initializeDatabase, sequelize } from "./infrastructure/Database";
-import client from "./app/client";
+import client from './infrastructure/Discord';
+import { CommandHandler } from './handlers/commandHandler';
+import path from 'path';
 
 const bootstrap = async () => {
   try {
@@ -21,6 +23,10 @@ const bootstrap = async () => {
 
     const eh = new EventHandler(client);
     await eh.loadAll();
+
+    const ch = new CommandHandler(client, { commandsDir: "src/commands" });
+    ch.loadAll();
+    await ch.registerSlashCommands(botConfig.testServer);
 
     await client.login(botConfig.token).then();
 

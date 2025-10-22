@@ -10,7 +10,7 @@ export const initializeDatabase = async (options: InitializeDbOptions = {}): Pro
   try {
     await sequelize.sync({
       force: options.force ?? false,
-      alter: options.alter ?? false,
+      alter: options.alter ?? true,
     });
     
     logger.info('Database synchronization completed.');

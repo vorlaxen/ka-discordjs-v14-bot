@@ -1,15 +1,30 @@
-import { Client, Collection, type Interaction, type CommandInteraction, type SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from "discord.js";
+import { Client, Collection, type Interaction, type CommandInteraction, type SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, Message, ChatInputCommandInteraction } from "discord.js";
+
+export interface PrefixCommand {
+  name: string;
+  description?: string;
+  execute: (message: Message, client: ExtendedClient, args: string[]) => Promise<void>;
+}
+
+export interface SlashCommand {
+  data: SlashCommandBuilder;
+  settings?: any;
+  execute: (interaction: CommandInteraction, client: ExtendedClient) => Promise<void>;
+}
 
 export interface BotCommand {
+  name: string;
+  description?: string;
   data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder;
-  settings: {
+  settings?: {
     cooldown?: number;
     ownerRequired?: boolean;
     adminRequired?: boolean;
     disabled?: boolean;
     ignoreSilent?: boolean;
   }
-  execute: (interaction: CommandInteraction, client: ExtendedClient) => Promise<void>;
+  execute?: (target: Message | CommandInteraction, client: ExtendedClient, args?: string[]) => Promise<void>;
+  executeSlash?: (interaction: CommandInteraction, client: ExtendedClient) => Promise<void>;
 }
 
 export interface ExtendedClient extends Client {

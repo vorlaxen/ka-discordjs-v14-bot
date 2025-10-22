@@ -14,8 +14,15 @@ export class GuildModel extends Model {
     ownerId?: string;
 
     @Column({ type: DataType.STRING, allowNull: true })
-    region?: string;
+    preferredLocale?: string;
 
-    @HasOne(() => GuildSettingsModel)
+    @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: true })
+    isActive!: boolean;
+
+    @HasOne(() => GuildSettingsModel, {
+        foreignKey: "guildId",
+        as: "settings",
+        onDelete: "CASCADE",
+    })
     settings!: GuildSettingsModel;
 }
