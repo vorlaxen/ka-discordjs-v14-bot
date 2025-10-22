@@ -1,13 +1,14 @@
 import { Guild } from "discord.js";
-import { BotEvent } from "../../types/clientTypes";
+import { BotEvent, ExtendedClient } from "../../types/clientTypes";
 import logger from "../../infrastructure/Logger";
 import { GuildModel } from "../../models/Guilds/GuildModel";
 import { GuildSettingsModel } from "../../models/Guilds/GuildSettingsModel";
+import { CommandHandler } from "../../handlers/commandHandler";
 
 const guildCreate: BotEvent<[Guild]> = {
     name: "guildCreate",
     once: false,
-    execute: async (guild): Promise<void> => {
+    execute: async (guild, client: ExtendedClient): Promise<void> => {
         try {
             logger.info(`Joined new guild: ${guild.name} (${guild.id})`);
 
@@ -24,6 +25,10 @@ const guildCreate: BotEvent<[Guild]> = {
             });
 
             logger.info(`Guild ${guild.name} (${guild.id}) successfully added/updated in database.`);
+
+            const ch = new CommandHandler(client, { commandsDir: "commands" });
+            ch.loadAll();
+            await ch.registerSlashCommands(guild.id);
 
         } catch (error) {
             const err = error instanceof Error ? error : new Error(String(error));

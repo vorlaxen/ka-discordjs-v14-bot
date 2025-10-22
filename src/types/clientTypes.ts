@@ -1,4 +1,4 @@
-import { Client, Collection, type Interaction, type CommandInteraction, type SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, Message, ChatInputCommandInteraction } from "discord.js";
+import { Client, Collection, type Interaction, type CommandInteraction, type SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, Message, ChatInputCommandInteraction, SlashCommandOptionsOnlyBuilder } from "discord.js";
 
 export interface PrefixCommand {
   name: string;
@@ -15,7 +15,7 @@ export interface SlashCommand {
 export interface BotCommand {
   name: string;
   description?: string;
-  data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder;
+  data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | SlashCommandOptionsOnlyBuilder;
   settings?: {
     cooldown?: number;
     ownerRequired?: boolean;

@@ -10,6 +10,10 @@ export default {
         const command = client.commands.get(interaction.commandName);
         if (!command) return;
 
-        await command.execute(interaction, client);
+        if (command.executeSlash) {
+            await command.executeSlash(interaction, client);
+        } else {
+            console.warn(`Slash command ${interaction.commandName} has no executeSlash handler.`);
+        }
     }
 };
