@@ -1,5 +1,11 @@
-import { Table, Column, Model, DataType, PrimaryKey, HasOne } from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, HasOne, Default } from "sequelize-typescript";
 import { GuildSettingsModel } from "./GuildSettingsModel";
+
+export enum GuildStatus {
+    ACTIVE = 0,
+    INACTIVE = 1,
+    BANNED = 2
+}
 
 @Table({
     tableName: "guilds",
@@ -16,8 +22,9 @@ export class GuildModel extends Model {
     @Column({ type: DataType.STRING, allowNull: true })
     preferredLocale?: string;
 
-    @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: true })
-    isActive!: boolean;
+    @Default(GuildStatus.ACTIVE)
+    @Column({ type: DataType.INTEGER })
+    status!: GuildStatus;
 
     @HasOne(() => GuildSettingsModel, {
         foreignKey: "guildId",

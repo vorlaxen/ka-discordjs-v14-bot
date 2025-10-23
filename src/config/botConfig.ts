@@ -5,7 +5,7 @@ export const botConfig = {
     // Core
     token: mustParse(env.BOT_TOKEN, "BOT_TOKEN", String),
     appId: mustParse(env.BOT_APP_ID, "BOT_APP_ID", String),
-    testServer: mustParse(env.BOT_TEST_SERVER, "BOT_TEST_SERVER", String),
+    mainServer: mustParse(env.BOT_MAIN_SERVER, "BOT_MAIN_SERVER", String),
 
     // Command & Prefix
     prefix: env.BOT_PREFIX || "!",

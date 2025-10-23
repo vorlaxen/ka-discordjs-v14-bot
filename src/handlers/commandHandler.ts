@@ -21,35 +21,44 @@ export class CommandHandler {
       : path.resolve(process.cwd(), "src/commands");
   }
 
-  /** Tüm komutları yükler (prefix + slash + all) */
+  private getAllCommandFiles(dir: string): string[] {
+    let results: string[] = [];
+    const list = fs.readdirSync(dir);
+    for (const file of list) {
+      const fullPath = path.join(dir, file);
+      const stat = fs.statSync(fullPath);
+      if (stat && stat.isDirectory()) {
+        results = results.concat(this.getAllCommandFiles(fullPath));
+      } else if (file.endsWith(".ts") || file.endsWith(".js")) {
+        results.push(fullPath);
+      }
+    }
+    return results;
+  }
+
   public loadAll(): void {
     const categories = ["prefix", "slash", "all"];
     for (const cat of categories) {
       const catPath = path.join(this.commandsDir, cat);
       if (!fs.existsSync(catPath)) continue;
 
-      const files = fs.readdirSync(catPath).filter(f => f.endsWith(".ts") || f.endsWith(".js"));
+      const files = this.getAllCommandFiles(catPath); // artık alt klasörleri de alır
       for (const file of files) {
-        // import yerine dynamic import kullanmak daha güvenli
-        const fullPath = path.join(catPath, file);
         let imported: any;
         try {
-          imported = require(fullPath);
+          imported = require(file);
         } catch (err) {
-          logger.error(`Failed to import command file: ${fullPath}`, err);
+          logger.error(`Failed to import command file: ${file}`, err);
           continue;
         }
 
         const command: BotCommand = imported?.default;
         if (!command) continue;
 
-        // Slash komut
         if ("data" in command && command.data?.name && typeof command.data.name === "string") {
           this.client.commands.set(command.data.name, command);
           logger.info(`Loaded slash command: ${command.data.name}`);
-        }
-        // Prefix komut
-        else if ("name" in command && typeof command.name === "string") {
+        } else if ("name" in command && typeof command.name === "string") {
           this.client.commands.set(command.name, command);
           logger.info(`Loaded prefix command: ${command.name}`);
         }

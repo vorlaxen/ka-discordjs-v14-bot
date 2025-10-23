@@ -173,7 +173,7 @@ export class EmbedUtils {
       pages.push({
         ...baseOptions,
         description: pageItems.join('\n'),
-        footer: `Page ${i + 1}/${totalPages} • ${baseOptions.footer || 'Powered by MomentumX ⚡'}`
+        footer: `Page ${i + 1}/${totalPages} • ${baseOptions.footer || 'Kod Akademisi'}`
       });
     }
 
@@ -307,7 +307,7 @@ export function createAdvancedEmbed(options: ExtendedEmbedOptions): EmbedBuilder
 
   if (options.user) {
     embed.setFooter({
-      text: `${options.showDefaultFooter !== false ? (options.brandName || 'Momentum') : ''}`,
+      text: `${options.showDefaultFooter !== false ? (options.brandName || 'Kod Akademisi') : ''}`,
       iconURL: options.user.displayAvatarURL({ extension: "png", size: 64 })
     });
   } else if (options.footer) {
@@ -323,7 +323,7 @@ export function createAdvancedEmbed(options: ExtendedEmbedOptions): EmbedBuilder
     }
   } else if (options.showDefaultFooter !== false) {
     embed.setFooter({
-      text: `${options.brandName || 'Momentum'}`
+      text: `${options.brandName || 'Kod Akademisi'}`
     });
   }
 

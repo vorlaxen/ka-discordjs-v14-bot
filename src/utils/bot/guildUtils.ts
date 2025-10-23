@@ -10,8 +10,7 @@ import {
   ThreadChannel,
   Message,
 } from "discord.js";
-import logger from "../../services/logger";
-import { DISCORD_LIMITS } from "../../core/constants/botConstants";
+import { DISCORD_LIMITS } from "../../constants/botConstants";
 
 export interface ChannelSearchOptions {
   type?: number;

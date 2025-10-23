@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "discord.js";
-import { BotCommand, ExtendedClient } from "../../types/clientTypes";
+import { BotCommand, ExtendedClient } from "../../../types/clientTypes";
 import { CommandInteraction } from "discord.js";
-import { GuildSettingsModel } from "../../models/Guilds/GuildSettingsModel";
+import { GuildSettingsModel } from "../../../models/Guilds/GuildSettingsModel";
 
 const setChannel: BotCommand = {
     name: "set-channel",

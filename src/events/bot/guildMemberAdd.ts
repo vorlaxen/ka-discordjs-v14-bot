@@ -2,7 +2,7 @@ import { GuildMember, TextChannel } from "discord.js";
 import { ExtendedClient } from "../../types/clientTypes";
 import { GuildSettingsModel } from "../../models/Guilds/GuildSettingsModel";
 import { getAppEmoji } from "../../utils/bot/emojiUtils";
-import { createAdvancedEmbed } from "../../helpers/embedHelper";
+import { createAdvancedEmbed } from "../../infrastructure/Discord/helper/embedHelper";
 
 const guildMemberAdd = {
   name: "guildMemberAdd",

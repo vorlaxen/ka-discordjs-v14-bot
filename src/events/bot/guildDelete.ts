@@ -1,7 +1,7 @@
 import { Guild } from "discord.js";
 import { BotEvent } from "../../types/clientTypes";
 import logger from "../../infrastructure/Logger";
-import { GuildModel } from "../../models/Guilds/GuildModel";
+import { GuildModel, GuildStatus } from "../../models/Guilds/GuildModel";
 
 const guildDelete: BotEvent<[Guild]> = {
     name: "guildDelete",
@@ -16,7 +16,7 @@ const guildDelete: BotEvent<[Guild]> = {
                 return;
             }
 
-            await existingGuild.update({ isActive: false });
+            await existingGuild.update({ status: GuildStatus.INACTIVE });
 
             logger.info(`Guild ${guild.name} (${guild.id}) marked as inactive in database.`);
         } catch (error) {

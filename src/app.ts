@@ -24,7 +24,7 @@ const bootstrap = async () => {
 
     const ch = new CommandHandler(client, { commandsDir: "src/commands" });
     ch.loadAll();
-    await ch.registerSlashCommands(botConfig.testServer);
+    await ch.registerSlashCommands(botConfig.mainServer);
 
     await client.login(botConfig.token).then();
 

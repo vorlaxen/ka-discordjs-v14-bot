@@ -21,6 +21,7 @@ export interface BotCommand {
     ownerRequired?: boolean;
     adminRequired?: boolean;
     disabled?: boolean;
+    mainGuildOnly?: boolean;
     ignoreSilent?: boolean;
   }
   execute?: (target: Message | CommandInteraction, client: ExtendedClient, args?: string[]) => Promise<void>;

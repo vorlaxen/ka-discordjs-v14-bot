@@ -1,5 +1,5 @@
 import { Client, ActivityType, PresenceStatusData, PresenceData } from "discord.js";
-import logger from "../../services/logger";
+import logger from "../../Logger";
 
 interface PresenceActivity {
   name: string;

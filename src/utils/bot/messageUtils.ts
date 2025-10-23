@@ -12,10 +12,9 @@ import {
   MessageCreateOptions,
   MessageFlags,
 } from "discord.js";
-import logger from "../../services/logger";
-import { DISCORD_LIMITS } from "../../core/constants/botConstants";
+import logger from "../../infrastructure/Logger";
+import { DISCORD_LIMITS } from "../../constants/botConstants";
 
-// Options for safeSend
 export interface MessageSendOptions extends MessageCreateOptions {
   retry?: boolean;
   retryAttempts?: number;
