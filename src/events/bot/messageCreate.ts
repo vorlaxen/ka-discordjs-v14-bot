@@ -9,7 +9,6 @@ const messageCreate = {
   once: false,
   execute: async (message: Message, client: ExtendedClient) => {
     if (message.author.bot || !message.guild) return;
-
     if (!message.content.startsWith(prefix)) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -17,14 +16,23 @@ const messageCreate = {
     if (!cmdName) return;
 
     const command = client.commands.get(cmdName);
-    if (!command) return;
+    if (!command || !command.execute) return;
 
     try {
-      await command.execute(message, client);
+      const sentMessage = (await command.execute(message, client, args)) as any;
+
+      const deleteTime = command.settings?.deleteTime;
+      if (
+        deleteTime &&
+        sentMessage &&
+        typeof sentMessage.delete === "function"
+      ) {
+        setTimeout(() => sentMessage.delete().catch(() => {}), deleteTime);
+      }
     } catch (err) {
       console.error(`Error executing prefix command ${cmdName}:`, err);
     }
-  }
+  },
 };
 
 export default messageCreate;

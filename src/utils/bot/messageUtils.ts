@@ -69,8 +69,8 @@ export const replyEphemeral = async (
   interaction: Interaction,
   content: string | EmbedBuilder,
   components?: ActionRowBuilder<ButtonBuilder>[]
-): Promise<void> => {
-  if (!interaction.isRepliable()) return;
+): Promise<Message | null> => {
+  if (!interaction.isRepliable()) return null;
 
   const payload: InteractionReplyOptions = {
     flags: MessageFlags.Ephemeral,
@@ -83,20 +83,24 @@ export const replyEphemeral = async (
     payload.content = content.slice(0, DISCORD_LIMITS.MESSAGE_CONTENT);
   }
 
+  let msg: Message | null = null;
   if (interaction.replied || interaction.deferred) {
-    await interaction.followUp(payload);
+    msg = await interaction.followUp({ ...payload, fetchReply: true });
   } else {
-    await interaction.reply(payload);
+    msg = await interaction.reply({ ...payload, fetchReply: true });
   }
+
+  return msg;
 };
+
 
 export const replySafe = async (
   interaction: Interaction,
   content: string | EmbedBuilder,
   ephemeral = false,
   components?: ActionRowBuilder<ButtonBuilder>[]
-): Promise<void> => {
-  if (!interaction.isRepliable()) return;
+): Promise<Message | null> => {
+  if (!interaction.isRepliable()) return null;
 
   const payload: InteractionReplyOptions = {
     ...(components && { components }),
@@ -109,11 +113,14 @@ export const replySafe = async (
     payload.content = content.slice(0, DISCORD_LIMITS.MESSAGE_CONTENT);
   }
 
+  let msg: Message | null = null;
   if (interaction.replied || interaction.deferred) {
-    await interaction.followUp(payload);
+    msg = await interaction.followUp({ ...payload, fetchReply: true });
   } else {
-    await interaction.reply(payload);
+    msg = await interaction.reply({ ...payload, fetchReply: true });
   }
+
+  return msg;
 };
 
 export const chunkMessage = (

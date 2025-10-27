@@ -1,4 +1,4 @@
-import { CommandInteraction, Interaction } from "discord.js";
+import { CommandInteraction, Interaction, Message } from "discord.js";
 import { ExtendedClient } from "../../types/clientTypes";
 import { botConfig } from "../../config";
 import logger from "../../infrastructure/Logger";
@@ -15,45 +15,60 @@ export default {
     if (command.settings?.disabled) {
       await interaction.reply({
         content: "Bu komut şu anda devre dışı.",
-        ephemeral: true
+        ephemeral: true,
       });
       return;
     }
 
-    if (command.settings.mainGuildOnly && interaction.guildId !== botConfig.mainServer) {
+    if (
+      command.settings.mainGuildOnly &&
+      interaction.guildId !== botConfig.mainServer
+    ) {
       await interaction.reply({
         content: "Bu komut yalnızca ana sunucuda kullanılabilir.",
-        ephemeral: true
+        ephemeral: true,
       });
       return;
     }
 
     try {
-      if (command.executeSlash) {
-        await command.executeSlash(interaction, client);
-      } else if (command.execute) {
-        await command.execute(interaction, client);
+      let sentMessage: Message | null = null;
+
+      if (interaction.isChatInputCommand() && command.executeSlash) {
+        sentMessage = await command.executeSlash(interaction, client) as any;
+      } else if (!interaction.isChatInputCommand() && command.execute) {
+        sentMessage = await command.execute(interaction, client) as any;
       } else {
-        logger.warn(`Slash command ${interaction.commandName} has no executeSlash or execute handler.`);
-        await interaction.reply({
-          content: "Bu komut doğru yapılandırılmamış.",
-          ephemeral: true
-        });
+        logger.warn(
+          `Command ${interaction.commandName} has no proper execute handler.`
+        );
+        if (!interaction.replied) {
+          sentMessage = await interaction.reply({
+            content: "Bu komut doğru yapılandırılmamış.",
+            ephemeral: true,
+            fetchReply: true,
+          });
+        }
+      }
+
+      const deleteTime = command.settings?.deleteTime;
+      if (deleteTime && sentMessage && 'delete' in sentMessage) {
+        setTimeout(() => sentMessage.delete().catch(() => { }), deleteTime);
       }
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       logger.error({
         message: `Error executing command: ${interaction.commandName}`,
         error: error.message,
-        stack: error.stack
+        stack: error.stack,
       });
 
       if (!interaction.replied) {
         await interaction.reply({
           content: "Komut çalıştırılırken bir hata oluştu.",
-          ephemeral: true
+          ephemeral: true,
         });
       }
     }
-  }
+  },
 };

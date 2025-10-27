@@ -21,4 +21,6 @@ export const botConfig = {
     // Moderation
     modLogChannelId: env.BOT_MOD_LOG_CHANNEL || undefined,
     autoDeleteCommands: env.BOT_MOD_AUTO_DELETE === "true",
+
+    appName: "CodeR7nge"
 };

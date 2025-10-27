@@ -3,7 +3,7 @@ import { Client, Collection, type Interaction, type CommandInteraction, type Sla
 export interface PrefixCommand {
   name: string;
   description?: string;
-  execute: (message: Message, client: ExtendedClient, args: string[]) => Promise<void>;
+  execute: (message: Message, client: ExtendedClient, args: string[]) => Promise<Message | void>;
 }
 
 export interface SlashCommand {
@@ -15,17 +15,18 @@ export interface SlashCommand {
 export interface BotCommand {
   name: string;
   description?: string;
-  data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | SlashCommandOptionsOnlyBuilder;
+  data?: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | SlashCommandOptionsOnlyBuilder;
   settings?: {
     cooldown?: number;
     ownerRequired?: boolean;
     adminRequired?: boolean;
+    deleteTime?: number;
     disabled?: boolean;
     mainGuildOnly?: boolean;
     ignoreSilent?: boolean;
   }
-  execute?: (target: Message | CommandInteraction, client: ExtendedClient, args?: string[]) => Promise<void>;
-  executeSlash?: (interaction: CommandInteraction, client: ExtendedClient) => Promise<void>;
+  execute?: (target: Message, client: ExtendedClient, args?: string[]) => Promise<Message | null | void>;
+  executeSlash?: (interaction: CommandInteraction, client: ExtendedClient) => Promise<void | null>;
 }
 
 export interface ExtendedClient extends Client {
